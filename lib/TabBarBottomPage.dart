@@ -16,11 +16,16 @@ class TabBarBottomPageWidget extends StatefulWidget {
 class _TabBarBottomPageWidgetState extends State<TabBarBottomPageWidget> {
 
   final PageController topPageController = new PageController();
-
   final List<String> tab = ['动态','Map','Widget'];
 
-
   _renderTab(){
+
+    return [
+      Tab(text: "动态",icon: Icon(Icons.language),),
+      Tab(text: "Map",icon:Icon(Icons.map)),
+      Tab(text: "Widget",icon: Icon(Icons.extension)),
+    ];
+
     // List<Widget> list = new List();
     // for (var i = 0; i < tab.length; i++) {
     //   list.add(
@@ -32,19 +37,12 @@ class _TabBarBottomPageWidgetState extends State<TabBarBottomPageWidget> {
     //         tab[i],
     //         maxLines: 1,
     //       ),
+          
     //     )
-
     //   );
     // }
 
     // return list;
-
-    return [
-      Tab(text: "动态",icon: Icon(Icons.language),),
-      Tab(text: "Map",icon:Icon(Icons.map)),
-      Tab(text: "Widget",icon: Icon(Icons.extension)),
-    ];
-
   }
 
 
@@ -53,7 +51,6 @@ class _TabBarBottomPageWidgetState extends State<TabBarBottomPageWidget> {
       new DynamicPage(),
       new MapPage(),
       new WidgetPage(),
-      // new TabBarPageFour()
     ];
   }
 
@@ -64,7 +61,7 @@ class _TabBarBottomPageWidgetState extends State<TabBarBottomPageWidget> {
       type: TabBarWidget.BOTTOM_TAB,
       tabItems: _renderTab(),
       tabViews: _renderPage(),
-      topPageController: topPageController,
+      // topPageController: topPageController,
       backgroundColor:Colors.red,
       indicatorColor: Colors.white,
       title: Text('TabBar Demo'),

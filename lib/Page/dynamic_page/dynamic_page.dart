@@ -8,8 +8,7 @@ import 'package:my_flutter/Page/dynamic_page/dynamic_page_item.dart';
 import 'package:my_flutter/Model/dynamic.dart';
 import 'package:my_flutter/Widget/drawer_widget.dart';
 
-class DynamicPage extends StatefulWidget {
-
+class DynamicPage extends StatefulWidget  {
   //  //any
   // print(){
   //    List numList = [1,2,3,4];
@@ -18,28 +17,25 @@ class DynamicPage extends StatefulWidget {
 
   // }
 
-
   @override
   _DynamicPageState createState() => _DynamicPageState();
 }
 
-class _DynamicPageState extends State<DynamicPage> {
-
+class _DynamicPageState extends State<DynamicPage> with AutomaticKeepAliveClientMixin {
   // final List<DynamicModel> _dynamicList;
 
-  // Choice _selectedChoice = choices[0]; // The app's "state".  
+  // Choice _selectedChoice = choices[0]; // The app's "state".
 
-      List resultList = new List();
+  List resultList = new List();
 
-  void _select(Choice choice){
+  void _select(Choice choice) {
     // Causes the app to rebuild with the new _selectedChoice.
     // setState(() {
-      // _selectedChoice = choice;
+    // _selectedChoice = choice;
     // });
 
-   print(choice.title.toString());
+    print(choice.title.toString());
   }
-
 
   // Future<Map> getIndexListData([Map<String, dynamic> params]) async {
   //   const juejin_flutter = 'https://timeline-merger-ms.juejin.im/v1/get_tag_entry?src=web&tagId=5a96291f6fb9a0535b535438';
@@ -72,35 +68,31 @@ class _DynamicPageState extends State<DynamicPage> {
   //   return result;
   // }
 
-
   getNewsData() async {
-
-    const juejin_flutter = 'https://timeline-merger-ms.juejin.im/v1/get_tag_entry?src=web&tagId=5a96291f6fb9a0535b535438';
+    const juejin_flutter =
+        'https://timeline-merger-ms.juejin.im/v1/get_tag_entry?src=web&tagId=5a96291f6fb9a0535b535438';
     // var pageIndex = (params is Map) ? params['pageIndex'] : 0;
-    final _param  = {'page':0,'pageSize':20,'sort':'rankIndex'};
+    final _param = {'page': 0, 'pageSize': 20, 'sort': 'rankIndex'};
     var responseList = [];
-    var  pageTotal = 0;
+    var pageTotal = 0;
 
-    try{
+    try {
       var response = await NetUtils.get(juejin_flutter, _param);
       responseList = response['d']['entrylist'];
-      pageTotal = response['d']['total'];  // 获取总page数
+      pageTotal = response['d']['total']; // 获取总page数
       if (!(pageTotal is int) || pageTotal <= 0) {
         pageTotal = 0;
       }
 
-
-    setState(() {
-    for (int i = 0; i < responseList.length; i++) {
-      DynamicModel cellData = new DynamicModel.fromJson(responseList[i]);  // 解析json
-      print('+++++++++' + cellData.title);
-      resultList.add(cellData);
-    }
-    });
-      
-    }catch(e){
-
-    }
+      setState(() {
+        for (int i = 0; i < responseList.length; i++) {
+          DynamicModel cellData =
+              new DynamicModel.fromJson(responseList[i]); // 解析json
+          print('+++++++++' + cellData.title);
+          resultList.add(cellData);
+        }
+      });
+    } catch (e) {}
     // // pageIndex += 1;
     // List resultList = new List();
     // for (int i = 0; i < responseList.length; i++) {
@@ -110,22 +102,25 @@ class _DynamicPageState extends State<DynamicPage> {
     //   } catch (e) {
     //     // No specified type, handles all
     //   }
-    
+
     // }
 
     // return resultList;
-
   }
 
-    /// 每个item的样式
-  Widget makeCard(index,model){
-    
+  /// 每个item的样式
+  Widget makeCard(index, model) {
     var myTitle = '${model.title}';
     var myUsername = '${'👲'}: ${model.username} ';
     var codeUrl = '${model.detailUrl}';
-    return DynamicItem(itemTitle:myTitle,itemUrl:codeUrl,data:myUsername);
+    return DynamicItem(itemTitle: myTitle, itemUrl: codeUrl, data: myUsername);
   }
 
+
+  @override
+  bool get wantKeepAlive => true;
+
+  
   @override
   void initState() {
     super.initState();
@@ -138,7 +133,6 @@ class _DynamicPageState extends State<DynamicPage> {
     ///一个页面的开始
     ///如果是新页面，会自带返回按键
     return new Scaffold(
-
       // 1.系统 AppBar
       // appBar:new MyAppBar(
       //   title: new Text(
@@ -147,10 +141,8 @@ class _DynamicPageState extends State<DynamicPage> {
       //   ),
       // ),
 
-
       // 2.自定义AppBar
       appBar: new AppBar(
-
         backgroundColor: Colors.red,
 
         // leading: new IconButton(
@@ -164,20 +156,19 @@ class _DynamicPageState extends State<DynamicPage> {
         ///这个title是一个Widget
         title: new Text("Flutter动态"),
         actions: <Widget>[
-          
           new IconButton(
             icon: new Icon(choices[0].icon),
             tooltip: 'Search',
-            onPressed: (){
+            onPressed: () {
               _select(choices[0]);
             },
           ),
-          
+
           new IconButton(
             // iconSize: 2,
             icon: new Icon(choices[1].icon),
             color: Colors.white,
-            onPressed: (){
+            onPressed: () {
               _select(choices[1]);
             },
           ),
@@ -185,21 +176,21 @@ class _DynamicPageState extends State<DynamicPage> {
           // overflow menu
           PopupMenuButton<Choice>(
             onSelected: _select,
-            itemBuilder: (BuildContext context){
+            itemBuilder: (BuildContext context) {
               return choices.skip(2).map((Choice choice) {
-                  return PopupMenuItem<Choice>(
-                    value: choice,
-                    child: Text(choice.title),
-                  );
-                }).toList();
+                return PopupMenuItem<Choice>(
+                  value: choice,
+                  child: Text(choice.title),
+                );
+              }).toList();
             },
           ),
         ],
       ),
 
       drawer: Drawer(
-        child: DrawerWidget(),  // 记得包一层
-      ) ,
+        child: DrawerWidget(), // 记得包一层
+      ),
 
       ///背景样式
       // backgroundColor: Colors.lightBlue,
@@ -215,8 +206,7 @@ class _DynamicPageState extends State<DynamicPage> {
 
       //正式的页面开始
       body: ListView.builder(
-
-        itemBuilder: (BuildContext context,int index/*context, index*/){
+        itemBuilder: (BuildContext context, int index /*context, index*/) {
           DynamicModel model = resultList[index];
           return makeCard(index, model);
           // return DynamicItem(itemTitle:model.title,itemUrl:model.detailUrl,data:model.username);
@@ -231,16 +221,15 @@ class _DynamicPageState extends State<DynamicPage> {
       //   padding: const EdgeInsets.all(16.0),
       //   child: ChoiceCard(choice: _selectedChoice),
       // ),
-
     );
   }
 }
 
-class  Choice{
-   const Choice({this.title,this.icon});
+class Choice {
+  const Choice({this.title, this.icon});
 
-   final String title;
-   final IconData icon;
+  final String title;
+  final IconData icon;
 }
 
 const List<Choice> choices = const <Choice>[
@@ -252,10 +241,9 @@ const List<Choice> choices = const <Choice>[
   const Choice(title: 'Walk', icon: Icons.directions_walk),
 ];
 
-
 // 主体部分
 class ChoiceCard extends StatelessWidget {
-  const ChoiceCard({Key key,this.choice}) : super(key: key);
+  const ChoiceCard({Key key, this.choice}) : super(key: key);
 
   final Choice choice;
 
@@ -264,13 +252,14 @@ class ChoiceCard extends StatelessWidget {
     final TextStyle textStyle = Theme.of(context).textTheme.display1;
     return Card(
       color: Colors.white,
-      child:Center(
+      child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Icon(choice.icon,size: 128.0,color: textStyle.color),  // 设置图片的大小以及图片颜色
-            Text(choice.title,style:textStyle),
+            Icon(choice.icon,
+                size: 128.0, color: textStyle.color), // 设置图片的大小以及图片颜色
+            Text(choice.title, style: textStyle),
           ],
         ),
       ),
