@@ -1,4 +1,4 @@
-# my_flutter
+# GXFlutterDemo
 
 A new flutter module project.
 
@@ -6,3 +6,8 @@ A new flutter module project.
 
 For help getting started with Flutter, view our online
 [documentation](https://flutter.io/).
+
+## flutter_map
+
+flutter_map demo from https://github.com/johnpryan/flutter_map.git
+
