@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:my_flutter/Page/dynamic_page/dynamic_detail_page.dart';
+import 'package:my_flutter/page/dynamic/dynamic_detail_page.dart';
 
 
 class NavigatorUtils {

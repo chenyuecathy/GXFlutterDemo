@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 
-import '../Page/Map/animated_map_controller.dart';
-import '../Page/Map/circle.dart';
-import '../Page/Map/esri.dart';
-import '../Page/Map/home.dart';
-import '../Page/Map/map_controller.dart';
-import '../Page/Map/marker_anchor.dart';
-import '../Page/Map/moving_markers.dart';
-import '../Page/Map/offline_map.dart';
-import '../Page/Map/offline_mbtiles_map.dart';
-import '../Page/Map/on_tap.dart';
-import '../Page/Map/overlay_image.dart';
-import '../Page/Map/plugin_api.dart';
-import '../Page/Map/polyline.dart';
-import '../Page/Map/tap_to_add.dart';
+import '../page/map/animated_map_controller.dart';
+import '../page/map/circle.dart';
+import '../page/map/esri.dart';
+import '../page/map/home.dart';
+import '../page/map/map_controller.dart';
+import '../page/map/marker_anchor.dart';
+import '../page/map/moving_markers.dart';
+import '../page/map/offline_map.dart';
+import '../page/map/offline_mbtiles_map.dart';
+import '../page/map/on_tap.dart';
+import '../page/map/overlay_image.dart';
+import '../page/map/plugin_api.dart';
+import '../page/map/polyline.dart';
+import '../page/map/tap_to_add.dart';
 
 Drawer buildDrawer(BuildContext context, String currentRoute) {
   return Drawer(

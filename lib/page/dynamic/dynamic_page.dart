@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:my_flutter/DemoItem.dart';
 
-import 'package:my_flutter/Utils/net_utils.dart';
-import 'package:my_flutter/Page/dynamic_page/dynamic_page_item.dart';
-import 'package:my_flutter/Model/dynamic.dart';
-import 'package:my_flutter/Widget/drawer_widget.dart';
+import 'package:my_flutter/utils/net_utils.dart';
+
+import 'package:my_flutter/model/dynamic.dart';
+import 'package:my_flutter/page/dynamic/dynamic_page_item.dart';
+import 'package:my_flutter/widget/drawer_widget.dart';
 
 class DynamicPage extends StatefulWidget {
   // print(){
@@ -19,13 +19,11 @@ class DynamicPage extends StatefulWidget {
   _DynamicPageState createState() => _DynamicPageState();
 }
 
-class _DynamicPageState extends State<DynamicPage>
-    with AutomaticKeepAliveClientMixin {
-  // final List<DynamicModel> _dynamicList;
+class _DynamicPageState extends State<DynamicPage> with AutomaticKeepAliveClientMixin {
 
   // Choice _selectedChoice = choices[0]; // The app's "state".
 
-  List resultList = new List();
+  List<DynamicModel> dynamicList = new List();
 
   int pageIndex = 0;
 
@@ -90,10 +88,9 @@ class _DynamicPageState extends State<DynamicPage>
 
       setState(() {
         for (int i = 0; i < responseList.length; i++) {
-          DynamicModel cellData =
-              new DynamicModel.fromJson(responseList[i]); // 解析json
+          DynamicModel cellData = new DynamicModel.fromJson(responseList[i]); // 解析json
           print('+++++++++' + cellData.title);
-          resultList.add(cellData);
+          dynamicList.add(cellData);
         }
 
         isShowLoading = false;
@@ -116,7 +113,7 @@ class _DynamicPageState extends State<DynamicPage>
   /// pull down refresh
   Future<Null> _refresh() async {
     // reset data
-    resultList.clear();
+    dynamicList.clear();
     pageIndex = 0;
     await _getNewsData();
     return;
@@ -258,15 +255,15 @@ class _DynamicPageState extends State<DynamicPage>
           backgroundColor: Colors.white,
           child: ListView.builder(
             itemBuilder: (context, index) {
-              if (index == resultList.length) {
+              if (index == dynamicList.length) {
                 return _buildProgressIndicator();
               } else {
-                DynamicModel model = resultList[index];
+                DynamicModel model = dynamicList[index];
                 return makeCard(index, model);
               }
             },
             physics: const AlwaysScrollableScrollPhysics(),
-            itemCount: resultList.length + 1,
+            itemCount: dynamicList.length + 1,
             controller: _scrollController,
           ),
         ),

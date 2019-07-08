@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
 
-import 'package:my_flutter/Widget/map_drawer_widget.dart';
+import 'package:my_flutter/widget/map_drawer_widget.dart';
 
 class CirclePage extends StatelessWidget {
   static const String route = 'circle';

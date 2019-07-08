@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 
 
-import 'package:my_flutter/Page/Map/animated_map_controller.dart';
-import 'package:my_flutter/Page/Map/circle.dart';
-import 'package:my_flutter/Page/Map/esri.dart';
-import 'package:my_flutter/Page/Map/home.dart';
-import 'package:my_flutter/Page/Map/map_controller.dart';
-import 'package:my_flutter/Page/Map/marker_anchor.dart';
-import 'package:my_flutter/Page/Map/moving_markers.dart';
-import 'package:my_flutter/Page/Map/offline_map.dart';
-import 'package:my_flutter/Page/Map/offline_mbtiles_map.dart';
-import 'package:my_flutter/Page/Map/on_tap.dart';
-import 'package:my_flutter/Page/Map/overlay_image.dart';
-import 'package:my_flutter/Page/Map/plugin_api.dart';
-import 'package:my_flutter/Page/Map/polyline.dart';
-import 'package:my_flutter/Page/Map/tap_to_add.dart';
+import 'package:my_flutter/page/map/animated_map_controller.dart';
+import 'package:my_flutter/page/map/circle.dart';
+import 'package:my_flutter/page/map/esri.dart';
+import 'package:my_flutter/page/map/home.dart';
+import 'package:my_flutter/page/map/map_controller.dart';
+import 'package:my_flutter/page/map/marker_anchor.dart';
+import 'package:my_flutter/page/map/moving_markers.dart';
+import 'package:my_flutter/page/map/offline_map.dart';
+import 'package:my_flutter/page/map/offline_mbtiles_map.dart';
+import 'package:my_flutter/page/map/on_tap.dart';
+import 'package:my_flutter/page/map/overlay_image.dart';
+import 'package:my_flutter/page/map/plugin_api.dart';
+import 'package:my_flutter/page/map/polyline.dart';
+import 'package:my_flutter/page/map/tap_to_add.dart';
 
 /*  Map 页面的主入口 **/
 // class MapPage extends StatelessWidget {
