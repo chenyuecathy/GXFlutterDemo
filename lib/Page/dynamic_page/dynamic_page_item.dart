@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:my_flutter/Utils/navigator_utils.dart';
 
+import 'package:my_flutter/Page/dynamic_page/dynamic_detail_page.dart';
+
 class DynamicItem extends StatelessWidget {
   final String itemUrl;
   final String itemTitle;
@@ -24,7 +26,14 @@ class DynamicItem extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           ListTile(
-            onTap: () { NavigatorUtils.goDynamicDetail(context, itemUrl, itemTitle); }, // 点击事件
+            onTap: () { 
+              // NavigatorUtils.goDynamicDetail(context, itemUrl, itemTitle);
+              Navigator.push(context, MaterialPageRoute(
+                builder: (BuildContext context){
+                  return new DynamicDetailPage(itemUrl, itemTitle);
+                }
+              ) );
+              }, // 点击事件
             leading: Icon(Icons.home),
             title: Padding(
               child: Text(

@@ -67,7 +67,7 @@ class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
     return MaterialApp(
       title: 'Map  Demo',
       theme: ThemeData(
-        primarySwatch:Colors.red,
+        primarySwatch:Colors.blue,
       ),
       home: HomePage(),
 

@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 
-class GXWebViewPage extends StatefulWidget {
+class DynamicDetailPage extends StatefulWidget {
 
   final String url;
   final String title;
 
-  GXWebViewPage(this.url,this.title);
+  DynamicDetailPage(this.url,this.title);
 
-  _GXWebViewPageState createState() => _GXWebViewPageState();
+  _DynamicDetailPageState createState() => _DynamicDetailPageState();
 }
 
-class _GXWebViewPageState extends State<GXWebViewPage> {
+class _DynamicDetailPageState extends State<DynamicDetailPage> {
 
 
   // final String _url;

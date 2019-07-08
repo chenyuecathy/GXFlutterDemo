@@ -8,25 +8,28 @@ import 'package:my_flutter/Page/dynamic_page/dynamic_page_item.dart';
 import 'package:my_flutter/Model/dynamic.dart';
 import 'package:my_flutter/Widget/drawer_widget.dart';
 
-class DynamicPage extends StatefulWidget  {
-  //  //any
+class DynamicPage extends StatefulWidget {
   // print(){
   //    List numList = [1,2,3,4];
   //   var any = numList.any((num) => num > 3);
   //   print(); //只要有>3的任何元素,返回true
-
   // }
 
   @override
   _DynamicPageState createState() => _DynamicPageState();
 }
 
-class _DynamicPageState extends State<DynamicPage> with AutomaticKeepAliveClientMixin {
+class _DynamicPageState extends State<DynamicPage>
+    with AutomaticKeepAliveClientMixin {
   // final List<DynamicModel> _dynamicList;
 
   // Choice _selectedChoice = choices[0]; // The app's "state".
 
   List resultList = new List();
+
+  int pageIndex = 0;
+
+  bool isShowLoading = false;
 
   void _select(Choice choice) {
     // Causes the app to rebuild with the new _selectedChoice.
@@ -68,11 +71,11 @@ class _DynamicPageState extends State<DynamicPage> with AutomaticKeepAliveClient
   //   return result;
   // }
 
-  getNewsData() async {
+  Future<Null> _getNewsData() async {
     const juejin_flutter =
         'https://timeline-merger-ms.juejin.im/v1/get_tag_entry?src=web&tagId=5a96291f6fb9a0535b535438';
     // var pageIndex = (params is Map) ? params['pageIndex'] : 0;
-    final _param = {'page': 0, 'pageSize': 20, 'sort': 'rankIndex'};
+    final _param = {'page': pageIndex, 'pageSize': 20, 'sort': 'rankIndex'};
     var responseList = [];
     var pageTotal = 0;
 
@@ -84,6 +87,7 @@ class _DynamicPageState extends State<DynamicPage> with AutomaticKeepAliveClient
         pageTotal = 0;
       }
 
+
       setState(() {
         for (int i = 0; i < responseList.length; i++) {
           DynamicModel cellData =
@@ -91,24 +95,17 @@ class _DynamicPageState extends State<DynamicPage> with AutomaticKeepAliveClient
           print('+++++++++' + cellData.title);
           resultList.add(cellData);
         }
+
+        isShowLoading = false;
+        return null;
       });
-    } catch (e) {}
-    // // pageIndex += 1;
-    // List resultList = new List();
-    // for (int i = 0; i < responseList.length; i++) {
-    //   try {
-    //     DynamicModel cellData = new DynamicModel.fromJson(responseList[i]);  // 解析json
-    //     resultList.add(cellData);
-    //   } catch (e) {
-    //     // No specified type, handles all
-    //   }
 
-    // }
-
-    // return resultList;
+    } catch (e) {
+      return null;
+    }
   }
 
-  /// 每个item的样式
+  /// item的样式
   Widget makeCard(index, model) {
     var myTitle = '${model.title}';
     var myUsername = '${'👲'}: ${model.username} ';
@@ -116,16 +113,65 @@ class _DynamicPageState extends State<DynamicPage> with AutomaticKeepAliveClient
     return DynamicItem(itemTitle: myTitle, itemUrl: codeUrl, data: myUsername);
   }
 
+  /// pull down refresh
+  Future<Null> _refresh() async {
+    // reset data
+    resultList.clear();
+    pageIndex = 0;
+    await _getNewsData();
+    return;
+  }
+
+  /// pull up refresh
+  Future<Null> _getMoreData() async {
+    if (!isShowLoading) {
+      setState(() {
+        isShowLoading = true;
+      });
+
+      pageIndex++;
+      await _getNewsData();
+    }
+
+  }
+
+  // 加载更多 Widget
+  Widget _buildProgressIndicator() {
+    return Padding(
+        padding: EdgeInsets.fromLTRB(0.0, 14.0, 0.0, 14.0),
+        child: Opacity(
+            opacity: isShowLoading ? 1.0 : 0.0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                // new SpinKitChasingDots(color: Colors.blueAccent, size: 26.0),
+                Padding(
+                    padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
+                    child: Text('正在加载中...'))
+              ],
+            )));
+  }
+
+  ScrollController _scrollController = new ScrollController();
 
   @override
   bool get wantKeepAlive => true;
 
-  
   @override
   void initState() {
     super.initState();
 
-    getNewsData();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        // 当滑到最底部时调用
+        _getMoreData();
+      }
+    });
+
+    _getNewsData();
   }
 
   @override
@@ -143,7 +189,7 @@ class _DynamicPageState extends State<DynamicPage> with AutomaticKeepAliveClient
 
       // 2.自定义AppBar
       appBar: new AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.blue,
 
         // leading: new IconButton(
         //   icon: new Icon(Icons.home),
@@ -192,29 +238,38 @@ class _DynamicPageState extends State<DynamicPage> with AutomaticKeepAliveClient
         child: DrawerWidget(), // 记得包一层
       ),
 
-      ///背景样式
-      // backgroundColor: Colors.lightBlue,
-
-      // 正式的页面开始  一个ListView，20个Item
-      // body: new ListView.builder(
-      //   itemBuilder: (context, index) {
-      //     // DynamicModel model =  _fetchDynamicList[index];
-      //     return DynamicItem();
+      // //正式的页面开始
+      // body: ListView.builder(
+      //   itemBuilder: (BuildContext context, int index /*context, index*/) {
+      //     DynamicModel model = resultList[index];
+      //     return makeCard(index, model);
+      //     // return DynamicItem(itemTitle:model.title,itemUrl:model.detailUrl,data:model.username);
       //   },
-      //   itemCount: 20,
+      //   itemCount: resultList.length,
+      //   // separatorBuilder: (BuildContext context,int index){
+      //   //   return index%2==0?Divider(color: Colors.blue):Divider(color: Colors.green);
+      //   // },
       // ),
 
-      //正式的页面开始
-      body: ListView.builder(
-        itemBuilder: (BuildContext context, int index /*context, index*/) {
-          DynamicModel model = resultList[index];
-          return makeCard(index, model);
-          // return DynamicItem(itemTitle:model.title,itemUrl:model.detailUrl,data:model.username);
-        },
-        itemCount: resultList.length,
-        // separatorBuilder: (BuildContext context,int index){
-        //   return index%2==0?Divider(color: Colors.blue):Divider(color: Colors.green);
-        // },
+      body: Container(
+        padding: EdgeInsets.all(2.0),
+        child: RefreshIndicator(
+          onRefresh: _refresh,
+          backgroundColor: Colors.white,
+          child: ListView.builder(
+            itemBuilder: (context, index) {
+              if (index == resultList.length) {
+                return _buildProgressIndicator();
+              } else {
+                DynamicModel model = resultList[index];
+                return makeCard(index, model);
+              }
+            },
+            physics: const AlwaysScrollableScrollPhysics(),
+            itemCount: resultList.length + 1,
+            controller: _scrollController,
+          ),
+        ),
       ),
 
       // body: Padding(

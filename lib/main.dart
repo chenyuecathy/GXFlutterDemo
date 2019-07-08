@@ -143,7 +143,7 @@ class DemoApp extends StatelessWidget {
     return new MaterialApp(  // MaterialApp：APP顶层主页入口
       title: 'First demo',
       theme: ThemeData(
-        primarySwatch: Colors.red,
+        primarySwatch: Colors.blue,
       ),
       // home: BasicAppBarSample(),
       home: TabBarBottomPageWidget(),
@@ -170,7 +170,7 @@ class MyApp extends StatelessWidget {
         // "hot reload" (press "r" in the console where you ran "flutter run",
         // or press Run > Flutter Hot Reload in a Flutter IDE). Notice that the
         // counter didn't reset back to zero; the application is not restarted.
-        primarySwatch: Colors.red,
+        primarySwatch: Colors.blue,
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
     );

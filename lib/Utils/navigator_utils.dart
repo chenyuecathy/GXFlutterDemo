@@ -15,7 +15,7 @@ class NavigatorUtils {
 
 
   static goDynamicDetail(BuildContext context,String url,String title){
-    NavigatorRouter(context, new GXWebViewPage(url,title));
+    NavigatorRouter(context, new DynamicDetailPage(url,title));
   }
 
 

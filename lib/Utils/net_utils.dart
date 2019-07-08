@@ -29,7 +29,7 @@ class NetUtils {
     String documentsPath = documentsDir.path;  // 获取Document目录路径
     var dir = new Directory("$documentsPath/cookies");
     await dir.create();  // 创建cookie目录
-    // print('documentPath:${dir.path}');
+    print('documentPath:${dir.path}');
     dio.interceptors.add(CookieManager(PersistCookieJar(dir: dir.path)));  // 缓存cookie
 
     // send request

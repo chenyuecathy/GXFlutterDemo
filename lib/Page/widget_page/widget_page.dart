@@ -9,8 +9,7 @@ class WidgetPage extends StatefulWidget {
   _WidgetPageState createState() => _WidgetPageState();
 }
 
-class _WidgetPageState extends State<WidgetPage>
-    with AutomaticKeepAliveClientMixin {
+class _WidgetPageState extends State<WidgetPage> with AutomaticKeepAliveClientMixin {
   var markers = <Marker>[
     Marker(
       width: 80.0,
