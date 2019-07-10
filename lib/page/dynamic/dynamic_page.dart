@@ -8,19 +8,15 @@ import 'package:my_flutter/model/dynamic.dart';
 import 'package:my_flutter/page/dynamic/dynamic_page_item.dart';
 import 'package:my_flutter/widget/drawer_widget.dart';
 
-class DynamicPage extends StatefulWidget {
-  // print(){
-  //    List numList = [1,2,3,4];
-  //   var any = numList.any((num) => num > 3);
-  //   print(); //只要有>3的任何元素,返回true
-  // }
+import 'package:my_flutter/component/list_refresh.dart' as listFresh;
 
+class DynamicPage extends StatefulWidget {
   @override
   _DynamicPageState createState() => _DynamicPageState();
 }
 
-class _DynamicPageState extends State<DynamicPage> with AutomaticKeepAliveClientMixin {
-
+class _DynamicPageState extends State<DynamicPage>
+    with AutomaticKeepAliveClientMixin {
   // Choice _selectedChoice = choices[0]; // The app's "state".
 
   List<DynamicModel> dynamicList = new List();
@@ -34,45 +30,59 @@ class _DynamicPageState extends State<DynamicPage> with AutomaticKeepAliveClient
     // setState(() {
     // _selectedChoice = choice;
     // });
-
     print(choice.title.toString());
   }
 
-  // Future<Map> getIndexListData([Map<String, dynamic> params]) async {
-  //   const juejin_flutter = 'https://timeline-merger-ms.juejin.im/v1/get_tag_entry?src=web&tagId=5a96291f6fb9a0535b535438';
-  //   var pageIndex = (params is Map) ? params['pageIndex'] : 0;
-  //   final _param  = {'page':pageIndex,'pageSize':20,'sort':'rankIndex'};
-  //   var responseList = [];
-  //   var  pageTotal = 0;
+  /// item的样式
+  Widget makeCard(index, model) {
+    var myTitle = '${model.title}';
+    var myUsername = '${'👲'}: ${model.username} ';
+    var codeUrl = '${model.detailUrl}';
+    return DynamicItem(itemTitle: myTitle, itemUrl: codeUrl, data: myUsername);
+  }
 
-  //   try{
-  //     var response = await NetUtils.get(juejin_flutter, _param);
-  //     responseList = response['d']['entrylist'];
-  //     pageTotal = response['d']['total'];
-  //     if (!(pageTotal is int) || pageTotal <= 0) {
-  //       pageTotal = 0;
-  //     }
-  //   }catch(e){
+  /// 获取业内动态数据
+  Future<Map> fetchDynamicDataFromNet([Map<String, dynamic> params]) async {
+    const juejin_flutter =
+        'https://timeline-merger-ms.juejin.im/v1/get_tag_entry?src=web&tagId=5a96291f6fb9a0535b535438';
+    var pageIndex =
+        (params is Map) ? params['pageIndex'] : 0; // list_refresh页动态获取数据
+    final _param = {'page': pageIndex, 'pageSize': 20, 'sort': 'rankIndex'};
+    var responseList = [];
+    var pageTotal = 0;
 
-  //   }
-  //   pageIndex += 1;
-  //   List resultList = new List();
-  //   for (int i = 0; i < responseList.length; i++) {
-  //     try {
-  //       DynamicModel cellData = new DynamicModel.fromJson(responseList[i]);  // 解析json
-  //       resultList.add(cellData);
-  //     } catch (e) {
-  //       // No specified type, handles all
-  //     }
-  //   }
-  //   Map<String, dynamic> result = {"list":resultList, 'total':pageTotal, 'pageIndex':pageIndex};
-  //   return result;
-  // }
+    try {
+      var response = await NetUtils.get(juejin_flutter, _param);
+      responseList = response['d']['entrylist'];
+      pageTotal = response['d']['total'];
+      if (!(pageTotal is int) || pageTotal <= 0) {
+        pageTotal = 0;
+      }
+    } catch (e) {}
+
+    pageIndex += 1;
+    List resultList = new List();
+    for (int i = 0; i < responseList.length; i++) {
+      try {
+        DynamicModel cellData =
+            new DynamicModel.fromJson(responseList[i]); // 解析json
+        print('+++++++++' + cellData.title);
+        resultList.add(cellData);
+      } catch (e) {
+        // No specified type, handles all
+      }
+    }
+    Map<String, dynamic> result = {
+      "list": resultList,
+      'total': pageTotal,
+      'pageIndex': pageIndex
+    };
+    return result;
+  }
 
   Future<Null> _getNewsData() async {
     const juejin_flutter =
         'https://timeline-merger-ms.juejin.im/v1/get_tag_entry?src=web&tagId=5a96291f6fb9a0535b535438';
-    // var pageIndex = (params is Map) ? params['pageIndex'] : 0;
     final _param = {'page': pageIndex, 'pageSize': 20, 'sort': 'rankIndex'};
     var responseList = [];
     var pageTotal = 0;
@@ -85,10 +95,10 @@ class _DynamicPageState extends State<DynamicPage> with AutomaticKeepAliveClient
         pageTotal = 0;
       }
 
-
       setState(() {
         for (int i = 0; i < responseList.length; i++) {
-          DynamicModel cellData = new DynamicModel.fromJson(responseList[i]); // 解析json
+          DynamicModel cellData =
+              new DynamicModel.fromJson(responseList[i]); // 解析json
           print('+++++++++' + cellData.title);
           dynamicList.add(cellData);
         }
@@ -96,18 +106,9 @@ class _DynamicPageState extends State<DynamicPage> with AutomaticKeepAliveClient
         isShowLoading = false;
         return null;
       });
-
     } catch (e) {
       return null;
     }
-  }
-
-  /// item的样式
-  Widget makeCard(index, model) {
-    var myTitle = '${model.title}';
-    var myUsername = '${'👲'}: ${model.username} ';
-    var codeUrl = '${model.detailUrl}';
-    return DynamicItem(itemTitle: myTitle, itemUrl: codeUrl, data: myUsername);
   }
 
   /// pull down refresh
@@ -129,7 +130,6 @@ class _DynamicPageState extends State<DynamicPage> with AutomaticKeepAliveClient
       pageIndex++;
       await _getNewsData();
     }
-
   }
 
   // 加载更多 Widget
@@ -160,15 +160,15 @@ class _DynamicPageState extends State<DynamicPage> with AutomaticKeepAliveClient
   void initState() {
     super.initState();
 
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        // 当滑到最底部时调用
-        _getMoreData();
-      }
-    });
+    // _scrollController.addListener(() {
+    //   if (_scrollController.position.pixels ==
+    //       _scrollController.position.maxScrollExtent) {
+    //     // 当滑到最底部时调用
+    //     _getMoreData();
+    //   }
+    // });
 
-    _getNewsData();
+    // _getNewsData();
   }
 
   @override
@@ -204,6 +204,12 @@ class _DynamicPageState extends State<DynamicPage> with AutomaticKeepAliveClient
             tooltip: 'Search',
             onPressed: () {
               _select(choices[0]);
+
+              ///测试接口
+              // Navigator.push(context,
+              //     MaterialPageRoute(builder: (BuildContext context) {
+              //   return new PolygonMapPage();
+              // }));
             },
           ),
 
@@ -248,26 +254,28 @@ class _DynamicPageState extends State<DynamicPage> with AutomaticKeepAliveClient
       //   // },
       // ),
 
-      body: Container(
-        padding: EdgeInsets.all(2.0),
-        child: RefreshIndicator(
-          onRefresh: _refresh,
-          backgroundColor: Colors.white,
-          child: ListView.builder(
-            itemBuilder: (context, index) {
-              if (index == dynamicList.length) {
-                return _buildProgressIndicator();
-              } else {
-                DynamicModel model = dynamicList[index];
-                return makeCard(index, model);
-              }
-            },
-            physics: const AlwaysScrollableScrollPhysics(),
-            itemCount: dynamicList.length + 1,
-            controller: _scrollController,
-          ),
-        ),
-      ),
+      // body: Container(
+      //   padding: EdgeInsets.all(2.0),
+      //   child: RefreshIndicator(
+      //     onRefresh: _refresh,
+      //     backgroundColor: Colors.white,
+      //     child: ListView.builder(
+      //       itemBuilder: (context, index) {
+      //         if (index == dynamicList.length) {
+      //           return _buildProgressIndicator();
+      //         } else {
+      //           DynamicModel model = dynamicList[index];
+      //           return makeCard(index, model);
+      //         }
+      //       },
+      //       physics: const AlwaysScrollableScrollPhysics(),
+      //       itemCount: dynamicList.length + 1,
+      //       controller: _scrollController,
+      //     ),
+      //   ),
+      // ),
+
+      body: listFresh.ListRefresh(fetchDynamicDataFromNet, makeCard, null),
 
       // body: Padding(
       //   padding: const EdgeInsets.all(16.0),

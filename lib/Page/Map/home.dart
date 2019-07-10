@@ -4,6 +4,8 @@ import 'package:latlong/latlong.dart';
 
 import 'package:my_flutter/widget/map_drawer_widget.dart';
 
+// import 'package:my_flutter/page/map/polygon.dart';
+
 class HomePage extends StatelessWidget {
   static const String route = '/';
 
@@ -42,7 +44,18 @@ class HomePage extends StatelessWidget {
     ];
 
     return Scaffold(
-      appBar: AppBar(title: Text('Home')),
+      appBar: AppBar(title: Text('Home'), actions: <Widget>[
+        new IconButton(
+          icon:Icon(Icons.map),
+          tooltip: 'Search',
+          onPressed: () {
+            // Navigator.push(context,
+            //     MaterialPageRoute(builder: (BuildContext context) {
+            //   return new PolygonMapPage();
+            // }));
+          },
+        ),
+      ]),
       drawer: buildDrawer(context, route),
       body: Padding(
         padding: EdgeInsets.only(top: 0.0, bottom: 0.0),

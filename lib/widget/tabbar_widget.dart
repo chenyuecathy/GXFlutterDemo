@@ -96,6 +96,7 @@ class _TabBarState extends State<TabBarWidget> with SingleTickerProviderStateMix
      * 第一种实现方式：Scaffold + AppBar+ TabBar + TabbarView 
      * 第二种实现方式：Scaffold + AppBar+ TabBar + PageView 
      * 本示例采用第一种,注释的部分为第二种实现方式，较复杂
+     * 第三种实现方式：https://segmentfault.com/a/1190000019396175 IndexedStack
     */
 
     /* 底部Tabbar */
@@ -117,6 +118,7 @@ class _TabBarState extends State<TabBarWidget> with SingleTickerProviderStateMix
         body: TabBarView(
           controller: _tabController,
           children: _tabViews,
+          physics: NeverScrollableScrollPhysics(), //禁止滑动
         ),
 
         // 底部导航栏，也就是tab栏
@@ -138,7 +140,7 @@ class _TabBarState extends State<TabBarWidget> with SingleTickerProviderStateMix
       drawer: _drawer,
 
       // 设置悬浮按键，不需要可以不设置
-      floatingActionButton: _floatingActionButton,
+      floatingActionButton: _floatingActionButton, 
 
       // 标题栏
       appBar: AppBar(

@@ -14,6 +14,7 @@ import '../page/map/overlay_image.dart';
 import '../page/map/plugin_api.dart';
 import '../page/map/polyline.dart';
 import '../page/map/tap_to_add.dart';
+import '../page/map/polygon.dart';
 
 Drawer buildDrawer(BuildContext context, String currentRoute) {
   return Drawer(
@@ -25,7 +26,7 @@ Drawer buildDrawer(BuildContext context, String currentRoute) {
           ),
         ),
         ListTile(
-          title: const Text('OpenStreetMap'),
+          title: const Text('Mapbox'),
           selected: currentRoute == HomePage.route,
           onTap: () {
             Navigator.pushReplacementNamed(context, HomePage.route);
@@ -50,6 +51,13 @@ Drawer buildDrawer(BuildContext context, String currentRoute) {
           selected: currentRoute == PolylinePage.route,
           onTap: () {
             Navigator.pushReplacementNamed(context, PolylinePage.route);
+          },
+        ),
+        ListTile(
+          title: const Text('polygon'),
+          selected: currentRoute == PolygonMapPage.route,
+          onTap: () {
+            Navigator.pushReplacementNamed(context, PolygonMapPage.route);
           },
         ),
         ListTile(
